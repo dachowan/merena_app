@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Capture</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        video { border: 1px solid #ccc; }
+        canvas { display: none; }
+    </style>
+</head>
+<body>
+    <h1>Capture a Photo</h1>
+    <video id="video" width="640" height="480" autoplay></video>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    <br>
+    <button id="capture">Capture Photo</button>
+    <br>
+    <a href="gallery.html">View Gallery</a>
+    <br>
+    <img id="photo" alt="Captured Photo">
+    <script src="script.js"></script>
+</body>
+</html>
