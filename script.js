@@ -33,7 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         photo.src = dataURL;
 
-        fetch('http://localhost:3001/upload', {
+        // Replace the fetch URL with your deployed app URL on Render
+        fetch('https://bemarena.onrender.com/upload', {
             method: 'POST',
             body: JSON.stringify({ image: dataURL }),
             headers: { 'Content-Type': 'application/json' }

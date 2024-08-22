@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    fetch('http://localhost:3001/photos')
+    // Replace the fetch URL with your deployed app URL on Render
+    fetch('https://bemarena.onrender.com/photos')
         .then(response => response.json())
         .then(photoUrls => {
             const gallery = document.getElementById('gallery');
@@ -7,7 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             photoUrls.forEach(url => {
                 const img = document.createElement('img');
-                img.src = `http://localhost:3001${url}`; // Ensure the URL is correct
+                // Ensure the URL points to the correct location on your deployed app
+                img.src = `https://bemarena.onrender.com${url}`;
                 img.alt = 'Photo';
                 img.style.width = '200px'; // Set a size for images
                 img.style.margin = '10px'; // Add some space between images
