@@ -5,10 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const captureButton = document.getElementById('capture');
     const flipButton = document.getElementById('flip');
     const flashButton = document.getElementById('flashButton');
-    const flash = document.getElementById('flash');
 
     let currentFacingMode = 'environment';
-    let flashEnabled = false;
+    let flashActive = false; // Track the flash state
 
     const constraints = {
         video: {
@@ -16,49 +15,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Start video stream
     const startVideoStream = async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
             video.srcObject = stream;
             video.onloadedmetadata = () => {
                 video.play();
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-
-                if (currentFacingMode === 'user') {
-                    video.style.transform = 'scaleX(-1)';
-                } else {
-                    video.style.transform = 'scaleX(1)';
-                }
             };
+
+            // Apply a horizontal flip if the front-facing camera is active
+            if (currentFacingMode === 'user') {
+                video.style.transform = 'scaleX(-1)';
+            } else {
+                video.style.transform = 'scaleX(1)'; // Reset to normal for rear camera
+            }
         } catch (error) {
             console.error('Error accessing webcam:', error);
         }
     };
 
+    // Initialize video
     startVideoStream();
 
+    // Capture button event listener
     captureButton.addEventListener('click', () => {
         if (!video.srcObject) {
             console.error('Video source is not available.');
             return;
         }
 
-        // Show flash effect if enabled and using rear camera
-        if (currentFacingMode === 'environment' && flashEnabled) {
-            flash.style.opacity = '1';
-            setTimeout(() => {
-                flash.style.opacity = '0';
-            }, 100); // Flash duration
-        }
-
-        // Ensure canvas size is correct
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-
+        // Flip the canvas back before drawing the image
         if (currentFacingMode === 'user') {
             context.save();
-            context.scale(-1, 1);
+            context.scale(-1, 1); // Flip horizontally
             context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
             context.restore();
         } else {
@@ -67,8 +57,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const dataURL = canvas.toDataURL('image/jpeg');
 
-        console.log('Captured image data URL:', dataURL);
+        console.log('Captured image data URL:', dataURL); // Debug log
 
+        // Show the flash effect
+        if (flashActive) {
+            const flashElement = document.createElement('div');
+            flashElement.className = 'flash';
+            document.body.appendChild(flashElement);
+            setTimeout(() => {
+                flashElement.style.opacity = '0'; // Hide flash
+                setTimeout(() => flashElement.remove(), 100); // Remove flash element after animation
+            }, 100); // Duration of flash effect
+        }
+
+        // Replace the fetch URL with your deployed app URL on Render
         fetch('https://bemarena.onrender.com/upload', {
             method: 'POST',
             body: JSON.stringify({ image: dataURL }),
@@ -79,21 +81,25 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error('Error uploading photo:', error));
     });
 
+    // Flip camera button event listener
     flipButton.addEventListener('click', () => {
         currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
         constraints.video.facingMode = currentFacingMode;
 
+        // Stop the current video stream
         const stream = video.srcObject;
         if (stream) {
             const tracks = stream.getTracks();
             tracks.forEach(track => track.stop());
         }
 
+        // Start the video stream with the new facing mode
         startVideoStream();
     });
 
+    // Flash button event listener
     flashButton.addEventListener('click', () => {
-        flashEnabled = !flashEnabled;
-        flashButton.classList.toggle('active', flashEnabled); // Toggle active class
+        flashActive = !flashActive; // Toggle flash state
+        flashButton.classList.toggle('active', flashActive); // Update button appearance if needed
     });
 });

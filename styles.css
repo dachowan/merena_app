@@ -138,12 +138,19 @@ a.gallery-button::after {
 
 /* Flash button styling */
 button#flashButton {
-    background-image: url('flash-icon.png'); /* Placeholder for an icon */
-    background-size: cover;
+    background-color: #fff; /* White background */
     width: 40px; /* Adjust width as needed */
     height: 40px; /* Adjust height as needed */
     position: absolute; /* Position absolutely within button-container */
-    left: 70px; /* Adjust position as needed */
+    left: 130px; /* Adjust position as needed */
     top: 0; /* Adjust position as needed */
-    margin-right: 10px; /* Optional: margin to give some space from the edge */
+    border: none; /* Remove border */
+    border-radius: 50%; /* Circular shape */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Optional: shadow for better visibility */
 }
+
+/* Optional: Add active state styling */
+button#flashButton.active {
+    background-color: #f0f0f0; /* Light grey background when active */
+}
+
