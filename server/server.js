@@ -3,10 +3,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const AWS = require('aws-sdk');
 const cors = require('cors');
-const { v4: uuidv4 } = require('uuid'); // For generating unique file names
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Log environment variables to verify
+console.log('S3 Bucket Name:', process.env.S3_BUCKET_NAME);
+console.log('AWS Access Key ID:', process.env.AWS_ACCESS_KEY_ID ? 'Set' : 'Not Set');
+console.log('AWS Secret Access Key:', process.env.AWS_SECRET_ACCESS_KEY ? 'Set' : 'Not Set');
+console.log('AWS Region:', process.env.AWS_REGION ? 'Set' : 'Not Set');
 
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -16,7 +22,7 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-app.use(cors()); 
+app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, '../')));
 
@@ -38,7 +44,7 @@ app.post('/upload', (req, res) => {
         Body: base64Data,
         ContentEncoding: 'base64',
         ContentType: 'image/jpeg',
-        ACL: 'public-read' // This makes the photo publicly accessible; adjust as needed
+        ACL: 'public-read'
     };
 
     s3.upload(params, (err, data) => {
@@ -65,7 +71,7 @@ app.get('/photos', (req, res) => {
         const photoUrls = data.Contents.map(item => s3.getSignedUrl('getObject', {
             Bucket: process.env.S3_BUCKET_NAME,
             Key: item.Key,
-            Expires: 60 * 60 * 24 // URL valid for 24 hours
+            Expires: 60 * 60 * 24
         }));
         res.json(photoUrls);
     });
