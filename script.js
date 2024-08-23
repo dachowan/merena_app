@@ -3,12 +3,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
     const captureButton = document.getElementById('capture');
+    const flipButton = document.getElementById('flip');
     const photo = document.getElementById('photo');
+
+    const constraints = {
+        video: {
+            facingMode: 'environment' // Default to rear camera
+        }
+    };
+    let currentFacingMode = 'environment';
 
     // Start video stream
     const startVideoStream = async () => {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
             video.srcObject = stream;
             video.onloadedmetadata = () => {
                 video.play();
@@ -18,8 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Initialize video
     startVideoStream();
 
+    // Capture button event listener
     captureButton.addEventListener('click', () => {
         if (!video.srcObject) {
             console.error('Video source is not available.');
@@ -42,5 +52,21 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => console.log('Photo uploaded successfully:', data))
         .catch(error => console.error('Error uploading photo:', error));
+    });
+
+    // Flip camera button event listener
+    flipButton.addEventListener('click', () => {
+        currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
+        constraints.video.facingMode = currentFacingMode;
+
+        // Stop the current video stream
+        const stream = video.srcObject;
+        if (stream) {
+            const tracks = stream.getTracks();
+            tracks.forEach(track => track.stop());
+        }
+
+        // Start the video stream with the new facing mode
+        startVideoStream();
     });
 });

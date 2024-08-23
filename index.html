@@ -4,22 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Capture</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        video { border: 1px solid #ccc; }
-        canvas { display: none; }
-    </style>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to the CSS file -->
 </head>
 <body>
-    <h1>Capture a Photo</h1>
-    <video id="video" width="640" height="480" autoplay></video>
-    <canvas id="canvas" width="640" height="480"></canvas>
-    <br>
-    <button id="capture">Capture Photo</button>
-    <br>
-    <a href="gallery.html">View Gallery</a>
-    <br>
-    <img id="photo" alt="Captured Photo">
+    <div class="container">
+        <video id="video" autoplay></video>
+        <canvas id="canvas" width="640" height="480"></canvas>
+    </div>
+    <div class="button-container">
+        <button id="flip" class="button"></button> <!-- Flip camera button -->
+        <button id="capture" class="button"></button> <!-- Capture button -->
+        <a href="gallery.html" class="gallery-button"></a> <!-- Gallery button -->
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
