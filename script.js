@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const context = canvas.getContext('2d');
     const captureButton = document.getElementById('capture');
     const flipButton = document.getElementById('flip');
-    const photo = document.getElementById('photo');
 
     let currentFacingMode = 'environment';
 
@@ -58,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log('Captured image data URL:', dataURL); // Debug log
 
-        photo.src = dataURL;
 
         // Replace the fetch URL with your deployed app URL on Render
         fetch('https://bemarena.onrender.com/upload', {
