@@ -8,8 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             photoUrls.forEach(url => {
                 const img = document.createElement('img');
-                // Ensure the URL points to the correct location on your deployed app
-                img.src = `https://bemarena.onrender.com${url}`;
+                img.src = url; // Use the signed URL directly
                 img.alt = 'Photo';
                 img.style.width = '200px'; // Set a size for images
                 img.style.margin = '10px'; // Add some space between images
