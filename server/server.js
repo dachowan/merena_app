@@ -5,20 +5,15 @@ const AWS = require('aws-sdk');
 const cors = require('cors');
 const { v4: uuidv4 } = require('uuid');
 
-const app = express();
-const PORT = process.env.PORT || 3001;
-
-// Log environment variables to verify
-console.log('S3 Bucket Name:', process.env.S3_BUCKET_NAME);
-console.log('AWS Access Key ID:', process.env.AWS_ACCESS_KEY_ID ? 'Set' : 'Not Set');
-console.log('AWS Secret Access Key:', process.env.AWS_SECRET_ACCESS_KEY ? 'Set' : 'Not Set');
-console.log('AWS Region:', process.env.AWS_REGION ? 'Set' : 'Not Set');
-
+// Configure AWS SDK with credentials and region
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION
+    region: process.env.AWS_REGION || 'eu-north-1' // Ensure this matches the bucket region
 });
+
+const app = express();
+const PORT = process.env.PORT || 3001;
 
 const s3 = new AWS.S3();
 
