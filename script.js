@@ -101,5 +101,14 @@ document.addEventListener('DOMContentLoaded', () => {
     flashButton.addEventListener('click', () => {
         flashActive = !flashActive; // Toggle flash state
         flashButton.classList.toggle('active', flashActive); // Update button appearance if needed
+
+        // Flash effect logic
+        if (flashActive) {
+            console.log('Flash activated'); // Debug log
+            // Optionally you can add any immediate flash effect here if needed
+        } else {
+            console.log('Flash deactivated'); // Debug log
+            // Optionally you can add any immediate flash effect here if needed
+        }
     });
 });

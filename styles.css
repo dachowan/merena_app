@@ -123,19 +123,6 @@ a.gallery-button::after {
     object-fit: contain; /* Maintain aspect ratio while fitting the container */
 }
 
-/* Flash effect styling */
-.flash {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    opacity: 0;
-    pointer-events: none; /* Ignore clicks on the flash element */
-    transition: opacity 0.1s ease;
-}
-
 /* Flash button styling */
 button#flashButton {
     background-color: #fff; /* White background */
@@ -154,3 +141,16 @@ button#flashButton.active {
     background-color: #f0f0f0; /* Light grey background when active */
 }
 
+/* Flash effect styling */
+.flash {
+    position: fixed; /* Use fixed positioning to cover the entire viewport */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
+    opacity: 1;
+    transition: opacity 0.1s ease-out;
+    pointer-events: none; /* Ensure it does not block other interactions */
+    z-index: 1000; /* Ensure it appears above other elements */
+}
