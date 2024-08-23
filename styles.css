@@ -1,3 +1,5 @@
+/* styles.css */
+
 /* Overall page style */
 body {
     font-family: Arial, sans-serif;
@@ -73,16 +75,16 @@ button#capture {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Optional: shadow for better visibility */
 }
 
-/* Gallery button styling */
-.gallery-button {
+/* Flash button styling */
+button#flashButton {
     width: 60px; /* Width of the button */
     height: 60px; /* Height of the button */
-    background-color: #fff; /* White background */
-    border: none;
-    border-radius: 10px; /* Rounded corners */
-    display: block;
-    position: absolute;
+    border-radius: 0; /* Square shape */
+    background-image: url('flash-icon.png'); /* Placeholder for a flash icon */
+    background-size: cover;
+    position: absolute; /* Position absolutely within button-container */
     left: 0; /* Align the left edge with the left edge of the container */
+    margin-left: 10px; /* Optional: margin to give some space from the edge */
 }
 
 /* Hide text inside the button */
@@ -90,67 +92,23 @@ button span {
     display: none;
 }
 
-/* Link styling for gallery button */
-a.gallery-button::after {
-    content: ''; /* Empty content to create a visual effect */
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-
-/* Gallery page styles */
-.gallery-page-body {
-    background-color: #000; /* Black background for gallery */
-    color: #fff; /* White text color */
-    text-align: center;
-    padding: 0;
-    margin: 0;
-}
-
-.gallery {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 20px;
-}
-
-.gallery img {
-    margin: 10px;
-    border: 0; /* No border for gallery images */
-    border-radius: 4px;
+/* Image styling for captured photo */
+img#photo {
+    margin-top: 20px;
+    border-radius: 15px; /* Rounded corners */
+    border: 1px solid #fff; /* Optional border for visibility */
     max-width: 100%; /* Responsive image size */
-    height: auto; /* Maintain original aspect ratio */
-    object-fit: contain; /* Maintain aspect ratio while fitting the container */
 }
 
 /* Flash effect styling */
 .flash {
-    position: fixed; /* Use fixed positioning to cover the entire viewport */
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
-    opacity: 1;
+    width: 100%;
+    height: 100%;
+    background: white;
+    opacity: 0;
     transition: opacity 0.1s ease-out;
-    pointer-events: none; /* Ensure it does not block other interactions */
-    z-index: 1000; /* Ensure it appears above other elements */
-}
-
-/* Flash button styling */
-button#flashButton {
-    background-color: #fff; /* White background */
-    width: 40px; /* Adjust width as needed */
-    height: 40px; /* Adjust height as needed */
-    border: none; /* Remove border */
-    border-radius: 50%; /* Circular shape */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Optional: shadow for better visibility */
-    position: absolute; /* Position absolutely within button-container */
-    left: 130px; /* Adjust position as needed */
-    top: 0; /* Adjust position as needed */
-}
-
-/* Optional: Add active state styling */
-button#flashButton.active {
-    background-color: #f0f0f0; /* Light grey background when active */
+    z-index: 9999; /* Ensure it's above other elements */
 }

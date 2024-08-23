@@ -9,17 +9,17 @@
 <body>
     <div class="container">
         <video id="video" autoplay></video>
-        <canvas id="canvas"></canvas>
-        <!-- Add a flash element -->
-        <div id="flash" class="flash"></div>
+        <canvas id="canvas" width="640" height="480"></canvas>
     </div>
     <div class="button-container">
         <button id="flip" class="button"></button> <!-- Flip camera button -->
-        <button id="flashButton" class="button"></button> <!-- Flash button -->
         <button id="capture" class="button"></button> <!-- Capture button -->
-        <a href="gallery.html" class="gallery-button"></a> <!-- Gallery button -->
+        <button id="flashButton" class="button"></button> <!-- Flash button -->
     </div>
     
+    <!-- Add this img element if you want to display the captured photo -->
+    <img id="photo" style="display:none;"/> <!-- This line is new -->
+
     <script src="script.js"></script>
 </body>
 </html>
