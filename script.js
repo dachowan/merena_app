@@ -25,7 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             // Apply a horizontal flip if the front-facing camera is active
-            video.style.transform = currentFacingMode === 'user' ? 'scaleX(-1)' : 'scaleX(1)';
+            if (currentFacingMode === 'user') {
+                video.style.transform = 'scaleX(-1)';
+            } else {
+                video.style.transform = 'scaleX(1)'; // Reset to normal for rear camera
+            }
         } catch (error) {
             console.error('Error accessing webcam:', error);
         }
@@ -41,19 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Remove existing flash elements before adding a new one
-        const existingFlashElements = document.querySelectorAll('.flash');
-        existingFlashElements.forEach(element => element.remove());
-
         // Flash effect
-        if (flashActive && currentFacingMode === 'environment') { // Ensure flash is only active for rear camera
+        if (flashActive) {
             const flashElement = document.createElement('div');
             flashElement.className = 'flash';
             document.body.appendChild(flashElement);
-            flashElement.style.display = 'block'; // Show flash
             setTimeout(() => {
-                flashElement.style.opacity = '0'; // Fade out
-                setTimeout(() => flashElement.remove(), 100); // Remove flash element after fade out
+                flashElement.style.opacity = '0'; // Hide flash
+                setTimeout(() => flashElement.remove(), 100); // Remove flash element after animation
             }, 100); // Duration of flash effect
         }
 
