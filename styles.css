@@ -123,24 +123,6 @@ a.gallery-button::after {
     object-fit: contain; /* Maintain aspect ratio while fitting the container */
 }
 
-/* Flash button styling */
-button#flashButton {
-    background-color: #fff; /* White background */
-    width: 40px; /* Adjust width as needed */
-    height: 40px; /* Adjust height as needed */
-    position: absolute; /* Position absolutely within button-container */
-    left: 130px; /* Adjust position as needed */
-    top: 0; /* Adjust position as needed */
-    border: none; /* Remove border */
-    border-radius: 50%; /* Circular shape */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Optional: shadow for better visibility */
-}
-
-/* Optional: Add active state styling */
-button#flashButton.active {
-    background-color: #f0f0f0; /* Light grey background when active */
-}
-
 /* Flash effect styling */
 .flash {
     position: fixed; /* Use fixed positioning to cover the entire viewport */
@@ -153,4 +135,22 @@ button#flashButton.active {
     transition: opacity 0.1s ease-out;
     pointer-events: none; /* Ensure it does not block other interactions */
     z-index: 1000; /* Ensure it appears above other elements */
+}
+
+/* Flash button styling */
+button#flashButton {
+    background-color: #fff; /* White background */
+    width: 40px; /* Adjust width as needed */
+    height: 40px; /* Adjust height as needed */
+    border: none; /* Remove border */
+    border-radius: 50%; /* Circular shape */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Optional: shadow for better visibility */
+    position: absolute; /* Position absolutely within button-container */
+    left: 130px; /* Adjust position as needed */
+    top: 0; /* Adjust position as needed */
+}
+
+/* Optional: Add active state styling */
+button#flashButton.active {
+    background-color: #f0f0f0; /* Light grey background when active */
 }

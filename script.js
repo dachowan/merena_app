@@ -45,6 +45,17 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Flash effect
+        if (flashActive) {
+            const flashElement = document.createElement('div');
+            flashElement.className = 'flash';
+            document.body.appendChild(flashElement);
+            setTimeout(() => {
+                flashElement.style.opacity = '0'; // Hide flash
+                setTimeout(() => flashElement.remove(), 100); // Remove flash element after animation
+            }, 100); // Duration of flash effect
+        }
+
         // Flip the canvas back before drawing the image
         if (currentFacingMode === 'user') {
             context.save();
@@ -58,17 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const dataURL = canvas.toDataURL('image/jpeg');
 
         console.log('Captured image data URL:', dataURL); // Debug log
-
-        // Show the flash effect
-        if (flashActive) {
-            const flashElement = document.createElement('div');
-            flashElement.className = 'flash';
-            document.body.appendChild(flashElement);
-            setTimeout(() => {
-                flashElement.style.opacity = '0'; // Hide flash
-                setTimeout(() => flashElement.remove(), 100); // Remove flash element after animation
-            }, 100); // Duration of flash effect
-        }
 
         // Replace the fetch URL with your deployed app URL on Render
         fetch('https://bemarena.onrender.com/upload', {
@@ -102,13 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
         flashActive = !flashActive; // Toggle flash state
         flashButton.classList.toggle('active', flashActive); // Update button appearance if needed
 
-        // Flash effect logic
-        if (flashActive) {
-            console.log('Flash activated'); // Debug log
-            // Optionally you can add any immediate flash effect here if needed
-        } else {
-            console.log('Flash deactivated'); // Debug log
-            // Optionally you can add any immediate flash effect here if needed
-        }
+        console.log('Flash state:', flashActive); // Debug log
     });
 });
