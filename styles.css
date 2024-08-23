@@ -122,3 +122,28 @@ a.gallery-button::after {
     height: auto; /* Maintain original aspect ratio */
     object-fit: contain; /* Maintain aspect ratio while fitting the container */
 }
+
+/* Flash effect styling */
+.flash {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    opacity: 0;
+    pointer-events: none; /* Ignore clicks on the flash element */
+    transition: opacity 0.1s ease;
+}
+
+/* Flash button styling */
+button#flashButton {
+    background-image: url('flash-icon.png'); /* Placeholder for an icon */
+    background-size: cover;
+    width: 40px; /* Adjust width as needed */
+    height: 40px; /* Adjust height as needed */
+    position: absolute; /* Position absolutely within button-container */
+    left: 70px; /* Adjust position as needed */
+    top: 0; /* Adjust position as needed */
+    margin-right: 10px; /* Optional: margin to give some space from the edge */
+}

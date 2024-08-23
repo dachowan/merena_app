@@ -4,8 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const context = canvas.getContext('2d');
     const captureButton = document.getElementById('capture');
     const flipButton = document.getElementById('flip');
+    const flashButton = document.getElementById('flashButton');
+    const flash = document.getElementById('flash');
 
     let currentFacingMode = 'environment';
+    let flashEnabled = false;
 
     const constraints = {
         video: {
@@ -13,23 +16,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Start video stream
     const startVideoStream = async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
             video.srcObject = stream;
             video.onloadedmetadata = () => {
                 video.play();
-
-                // Update canvas size to match video dimensions
                 canvas.width = video.videoWidth;
                 canvas.height = video.videoHeight;
 
-                // Apply a horizontal flip if the front-facing camera is active
                 if (currentFacingMode === 'user') {
                     video.style.transform = 'scaleX(-1)';
                 } else {
-                    video.style.transform = 'scaleX(1)'; // Reset to normal for rear camera
+                    video.style.transform = 'scaleX(1)';
                 }
             };
         } catch (error) {
@@ -37,14 +36,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Initialize video
     startVideoStream();
 
-    // Capture button event listener
     captureButton.addEventListener('click', () => {
         if (!video.srcObject) {
             console.error('Video source is not available.');
             return;
+        }
+
+        // Show flash effect if enabled and using rear camera
+        if (currentFacingMode === 'environment' && flashEnabled) {
+            flash.style.opacity = '1';
+            setTimeout(() => {
+                flash.style.opacity = '0';
+            }, 100); // Flash duration
         }
 
         // Ensure canvas size is correct
@@ -52,20 +57,18 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.height = video.videoHeight;
 
         if (currentFacingMode === 'user') {
-            // Flip the canvas horizontally if using the front-facing camera
             context.save();
-            context.scale(-1, 1); // Flip horizontally
+            context.scale(-1, 1);
             context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
             context.restore();
         } else {
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
         }
-        
+
         const dataURL = canvas.toDataURL('image/jpeg');
 
-        console.log('Captured image data URL:', dataURL); // Debug log
-        
-        // Replace the fetch URL with your deployed app URL on Render
+        console.log('Captured image data URL:', dataURL);
+
         fetch('https://bemarena.onrender.com/upload', {
             method: 'POST',
             body: JSON.stringify({ image: dataURL }),
@@ -76,19 +79,21 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error('Error uploading photo:', error));
     });
 
-    // Flip camera button event listener
     flipButton.addEventListener('click', () => {
         currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
         constraints.video.facingMode = currentFacingMode;
 
-        // Stop the current video stream
         const stream = video.srcObject;
         if (stream) {
             const tracks = stream.getTracks();
             tracks.forEach(track => track.stop());
         }
 
-        // Start the video stream with the new facing mode
         startVideoStream();
+    });
+
+    flashButton.addEventListener('click', () => {
+        flashEnabled = !flashEnabled;
+        flashButton.classList.toggle('active', flashEnabled); // Toggle active class
     });
 });
