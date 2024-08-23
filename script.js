@@ -4,14 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const context = canvas.getContext('2d');
     const captureButton = document.getElementById('capture');
     const flipButton = document.getElementById('flip');
-    const photo = document.getElementById('photo'); // Ensure this ID matches the HTML
+    const photo = document.getElementById('photo');
+
+    let currentFacingMode = 'environment';
 
     const constraints = {
         video: {
-            facingMode: 'environment' // Default to rear camera
+            facingMode: currentFacingMode // Default to rear camera
         }
     };
-    let currentFacingMode = 'environment';
 
     // Start video stream
     const startVideoStream = async () => {
@@ -21,6 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
             video.onloadedmetadata = () => {
                 video.play();
             };
+
+            // Apply a horizontal flip if the front-facing camera is active
+            if (currentFacingMode === 'user') {
+                video.style.transform = 'scaleX(-1)';
+            } else {
+                video.style.transform = 'scaleX(1)'; // Reset to normal for rear camera
+            }
         } catch (error) {
             console.error('Error accessing webcam:', error);
         }
@@ -36,16 +44,21 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        // Flip the canvas back before drawing the image
+        if (currentFacingMode === 'user') {
+            context.save();
+            context.scale(-1, 1); // Flip horizontally
+            context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
+            context.restore();
+        } else {
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        }
+
         const dataURL = canvas.toDataURL('image/jpeg');
 
         console.log('Captured image data URL:', dataURL); // Debug log
 
-        if (photo) { // Check if photo element exists
-            photo.src = dataURL;
-        } else {
-            console.error('Photo element is not found.');
-        }
+        photo.src = dataURL;
 
         // Replace the fetch URL with your deployed app URL on Render
         fetch('https://bemarena.onrender.com/upload', {
@@ -62,8 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
     flipButton.addEventListener('click', () => {
         currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
         constraints.video.facingMode = currentFacingMode;
-
-        console.log('Flipping camera to:', currentFacingMode); // Debug log
 
         // Stop the current video stream
         const stream = video.srcObject;
