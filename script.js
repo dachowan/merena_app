@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const context = canvas.getContext('2d');
     const captureButton = document.getElementById('capture');
     const flipButton = document.getElementById('flip');
-    const photo = document.getElementById('photo');
+    const photo = document.getElementById('photo'); // Ensure this ID matches the HTML
 
     const constraints = {
         video: {
@@ -41,7 +41,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log('Captured image data URL:', dataURL); // Debug log
 
-        photo.src = dataURL;
+        if (photo) { // Check if photo element exists
+            photo.src = dataURL;
+        } else {
+            console.error('Photo element is not found.');
+        }
 
         // Replace the fetch URL with your deployed app URL on Render
         fetch('https://bemarena.onrender.com/upload', {
@@ -58,6 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
     flipButton.addEventListener('click', () => {
         currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
         constraints.video.facingMode = currentFacingMode;
+
+        console.log('Flipping camera to:', currentFacingMode); // Debug log
 
         // Stop the current video stream
         const stream = video.srcObject;
