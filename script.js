@@ -20,14 +20,18 @@ document.addEventListener('DOMContentLoaded', () => {
             video.srcObject = stream;
             video.onloadedmetadata = () => {
                 video.play();
-            };
 
-            // Apply a horizontal flip if the front-facing camera is active
-            if (currentFacingMode === 'user') {
-                video.style.transform = 'scaleX(-1)';
-            } else {
-                video.style.transform = 'scaleX(1)'; // Reset to normal for rear camera
-            }
+                // Update canvas size to match video dimensions
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+
+                // Apply a horizontal flip if the front-facing camera is active
+                if (currentFacingMode === 'user') {
+                    video.style.transform = 'scaleX(-1)';
+                } else {
+                    video.style.transform = 'scaleX(1)'; // Reset to normal for rear camera
+                }
+            };
         } catch (error) {
             console.error('Error accessing webcam:', error);
         }
@@ -43,8 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Flip the canvas back before drawing the image
+        // Ensure canvas size is correct
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+
         if (currentFacingMode === 'user') {
+            // Flip the canvas horizontally if using the front-facing camera
             context.save();
             context.scale(-1, 1); // Flip horizontally
             context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
@@ -52,12 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
         }
-
+        
         const dataURL = canvas.toDataURL('image/jpeg');
 
         console.log('Captured image data URL:', dataURL); // Debug log
-
-
+        
         // Replace the fetch URL with your deployed app URL on Render
         fetch('https://bemarena.onrender.com/upload', {
             method: 'POST',
