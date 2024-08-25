@@ -92,8 +92,8 @@ canvas {
 
 /* Button styling */
 .button {
-    width: calc(5vw); /* Width of the button */
-    height: calc(5vw); /* Height of the button */
+    width: calc(15vw); /* Width of the button */
+    height: calc(15vw); /* Height of the button */
     border-radius: 50%; /* Circular shape */
     background-color: #fff; /* White background */
     border: none;
@@ -101,8 +101,8 @@ canvas {
 }
 
 .button2 {
-    width: calc(5vw); /* Width of the button */
-    height: calc(5vw); /* Height of the button */
+    width: calc(15vw); /* Width of the button */
+    height: calc(15vw); /* Height of the button */
     border-radius: 20%; /* Circular shape */
     background-color: #fff; /* White background */
     border: none;
@@ -111,10 +111,17 @@ canvas {
 
 /* Flip button styling */
 button#flip {
-    background-image: url('flip-icon.png'); /* Placeholder for an icon */
-    background-size: cover;
+    font-size: calc(5vw);
+    background-color: #fff;
+    cursor: pointer;
+    color: #000;
     position: absolute; /* Adjust position as needed */
     right: 0;
+}
+
+button#flip::before {
+    content: "\21C4"; /* Unicode for flip arrow */
+    font-family: Arial, sans-serif; /* Ensure proper font rendering */
 }
 
 /* Capture button styling */
