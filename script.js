@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
             video.srcObject = stream;
             video.onloadedmetadata = () => {
                 video.play();
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
             };
 
             // Apply a horizontal flip if the front-facing camera is active
