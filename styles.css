@@ -1,33 +1,66 @@
 /* styles.css */
 
 /* Overall page style */
+html, body {
+    height: 100%; /* Ensure html and body take full height */
+    margin: 0; /* Remove default margins */
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #000; /* Black background */
     color: #fff; /* White text color for contrast */
-    margin: 0;
-    padding: 0;
-    text-align: center;
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Full viewport height */
+    height: 100%; /* Full viewport height */
+    overflow: hidden; /* Prevent scrolling */
 }
 
 /* Container to hold the video */
 .container {
-    position: relative;
-    width: 90%; /* 90% width to leave 10% space on each side */
+    width: 90vw; /* 90% of the viewport width */
+    height: 80vh; /* 80% of the viewport height */
     margin: 0 auto; /* Center horizontally */
-    padding-top: 5%; /* 5% padding from the top to add space above the video */
-    flex: 1; /* Allow this container to take up available space */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Hide the overflowed part of the video */
+    position: relative;
+}
+
+/* Inner container for padding */
+.container2 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: calc(5vw);
+    padding-bottom: calc(2.5vw);
+    box-sizing: border-box; /* Include padding in the element's total width and height */
+    position: relative; /* Position relative for flash positioning */
+}
+
+/* Flash effect styling */
+.flash {
+    position: absolute; /* Cover the video element */
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5); /* White background with 50% opacity */
+    opacity: 0;
+    transition: opacity 0.1s ease-out; /* Brief fade-out effect */
+    pointer-events: none; /* Ensure it doesn’t block any interactions */
+    z-index: 10; /* Ensure it's above the video but below other elements */
+    border-radius: 40px; /* Match the border radius of the video */
+    object-fit: cover;
 }
 
 /* Video element */
 video {
     width: 100%; /* Fill the container */
-    height: auto; /* Maintain aspect ratio */
+    height: 100%; /* Fill the container */
     border-radius: 40px; /* Rounded corners */
-    border: 0px solid #fff; /* Optional border for visibility */
+    object-fit: cover; /* Cover the container while maintaining aspect ratio */
 }
 
 /* Canvas element for capturing image */
@@ -37,34 +70,51 @@ canvas {
 
 /* Button container to hold all buttons */
 .button-container {
-    width: 90%; /* Same width as the video container */
-    margin: 20px auto; /* 20px margin on top and bottom, centered horizontally */
-    height: 20%; /* 20% of the viewport height */
+    width: 90vw; /* Same width as the video container */
+    height: 20vh; /* 20% of the viewport height */
+    margin: 0 auto; /* Center horizontally */
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: center; /* Center the button container */
+    align-items: center; /* Center the buttons vertically */
+}
+
+/* Inner button container */
+.button-container2 {
+    width: 100%;
+    height: 100%; /* Full height of the button-container */
+    display: flex; /* Use flexbox for button alignment */
+    justify-content: space-around; /* Space out buttons */
+    align-items: center; /* Center buttons vertically */
+    padding-bottom: calc(2.5vw);
+    box-sizing: border-box; /* Include padding in the element's total width and height */
     position: relative;
-    padding-bottom: 20px; /* Ensure space at the bottom */
 }
 
 /* Button styling */
 .button {
-    width: 60px; /* Width of the button */
-    height: 60px; /* Height of the button */
+    width: calc(5vw); /* Width of the button */
+    height: calc(5vw); /* Height of the button */
     border-radius: 50%; /* Circular shape */
     background-color: #fff; /* White background */
     border: none;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Optional: shadow for better visibility */
+}
+
+.button2 {
+    width: calc(5vw); /* Width of the button */
+    height: calc(5vw); /* Height of the button */
+    border-radius: 20%; /* Circular shape */
+    background-color: #fff; /* White background */
+    border: none;
+    cursor: pointer; 
 }
 
 /* Flip button styling */
 button#flip {
     background-image: url('flip-icon.png'); /* Placeholder for an icon */
     background-size: cover;
-    position: absolute; /* Position absolutely within button-container */
-    right: 0; /* Align the right edge of the button with the right edge of the container */
-    margin-right: 10px; /* Optional: margin to give some space from the edge */
+    position: absolute; /* Adjust position as needed */
+    right: 0;
 }
 
 /* Capture button styling */
@@ -72,43 +122,5 @@ button#capture {
     background-color: #fff; /* White background */
     border: none;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Optional: shadow for better visibility */
-}
-
-/* Flash button styling */
-button#flashButton {
-    width: 60px; /* Width of the button */
-    height: 60px; /* Height of the button */
-    border-radius: 0; /* Square shape */
-    background-image: url('flash-icon.png'); /* Placeholder for a flash icon */
-    background-size: cover;
-    position: absolute; /* Position absolutely within button-container */
-    left: 0; /* Align the left edge with the left edge of the container */
-    margin-left: 10px; /* Optional: margin to give some space from the edge */
-}
-
-/* Hide text inside the button */
-button span {
-    display: none;
-}
-
-/* Image styling for captured photo */
-img#photo {
-    margin-top: 20px;
-    border-radius: 15px; /* Rounded corners */
-    border: 1px solid #fff; /* Optional border for visibility */
-    max-width: 100%; /* Responsive image size */
-}
-
-/* Flash effect styling */
-.flash {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: white;
-    opacity: 0;
-    transition: opacity 0.1s ease-out;
-    z-index: 9999; /* Ensure it's above other elements */
+    margin: 0 auto;
 }

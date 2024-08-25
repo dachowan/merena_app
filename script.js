@@ -1,13 +1,14 @@
+// script.js
+
 document.addEventListener('DOMContentLoaded', () => {
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
     const captureButton = document.getElementById('capture');
     const flipButton = document.getElementById('flip');
-    const flashButton = document.getElementById('flashButton');
+    const flash = document.querySelector('.flash'); // Select the flash element
 
     let currentFacingMode = 'environment';
-    let flashActive = false; // Track the flash state
 
     const constraints = {
         video: {
@@ -24,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 video.play();
                 canvas.width = video.videoWidth;
                 canvas.height = video.videoHeight;
+                updateFlashDimensions();
             };
 
             // Apply a horizontal flip if the front-facing camera is active
@@ -37,6 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Function to update flash dimensions to match video
+    const updateFlashDimensions = () => {
+        const videoRect = video.getBoundingClientRect();
+        flash.style.width = `${videoRect.width}px`;
+        flash.style.height = `${videoRect.height}px`;
+    };
+
     // Initialize video
     startVideoStream();
 
@@ -47,16 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Flash effect
-        if (flashActive) {
-            const flashElement = document.createElement('div');
-            flashElement.className = 'flash';
-            document.body.appendChild(flashElement);
-            setTimeout(() => {
-                flashElement.style.opacity = '0'; // Hide flash
-                setTimeout(() => flashElement.remove(), 100); // Remove flash element after animation
-            }, 100); // Duration of flash effect
-        }
+        // Show flash effect
+        flash.style.opacity = '1';
+        setTimeout(() => {
+            flash.style.opacity = '0';
+        }, 100); // Duration of flash effect
 
         // Flip the canvas back before drawing the image
         if (currentFacingMode === 'user') {
@@ -99,11 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
         startVideoStream();
     });
 
-    // Flash button event listener
-    flashButton.addEventListener('click', () => {
-        flashActive = !flashActive; // Toggle flash state
-        flashButton.classList.toggle('active', flashActive); // Update button appearance if needed
-
-        console.log('Flash state:', flashActive); // Debug log
-    });
+    // Update flash dimensions on window resize
+    window.addEventListener('resize', updateFlashDimensions);
 });

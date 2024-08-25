@@ -8,17 +8,18 @@
 </head>
 <body>
     <div class="container">
-        <video id="video" autoplay></video>
-        <canvas id="canvas"></canvas>
+        <div class="container2">
+            <video id="video" autoplay></video>
+            <canvas id="canvas"></canvas>
+            <div class="flash"></div> <!-- Flash overlay inside the container -->
+        </div>
     </div>
     <div class="button-container">
-        <button id="flip" class="button"></button> <!-- Flip camera button -->
-        <button id="capture" class="button"></button> <!-- Capture button -->
-        <button id="flashButton" class="button"></button> <!-- Flash button -->
+        <div class="button-container2">
+            <button id="flip" class="button2"></button>
+            <button id="capture" class="button"></button>
+        </div>
     </div>
-    
-    <!-- Add this img element if you want to display the captured photo -->
-    <img id="photo" style="display:none;"/> <!-- This line is new -->
 
     <script src="script.js"></script>
 </body>
