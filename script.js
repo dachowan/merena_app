@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
+    // Function to detect iOS devices
+    const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
     // Start video stream
     const startVideoStream = async () => {
