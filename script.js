@@ -50,7 +50,21 @@ document.addEventListener('DOMContentLoaded', () => {
         flash.style.height = `${videoRect.height}px`;
     };
 
-    
+        // Function to center the video in its container
+        const centerVideo = () => {
+            if (!isIOS()) return; // Only apply centering for iOS devices
+            
+            const containerRect = video.parentElement.getBoundingClientRect();
+            const videoRect = video.getBoundingClientRect();
+            
+            // Center the video horizontally and vertically
+            video.style.position = 'absolute';
+            video.style.top = `${(containerRect.height - videoRect.height) / 2}px`;
+            video.style.left = `${(containerRect.width - videoRect.width) / 2}px`;
+            video.style.height = 'auto'; // Reset height to auto
+            video.style.width = '100%'; // Set width to 100% to cover container
+        };
+
     // Initialize video
     startVideoStream();
 
