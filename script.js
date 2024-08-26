@@ -12,9 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const constraints = {
         video: {
-            facingMode: currentFacingMode // Default to rear camera
+            facingMode: currentFacingMode,
+            width: { ideal: 1280 },  // Ideal width
+            height: { ideal: 720 }   // Ideal height
         }
     };
+    
 
     // Start video stream
     const startVideoStream = async () => {

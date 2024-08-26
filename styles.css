@@ -1,5 +1,14 @@
 /* styles.css */
 
+@supports (-webkit-overflow-scrolling: touch) {
+    /* iOS-specific styles */
+    video {
+        position: relative !important; /* Reset position */
+        height: auto !important; /* Ensure auto height */
+        max-height: 100%; /* Ensure it fits within the parent container */
+    }
+}
+
 /* Overall page style */
 html, body {
     height: 100%; /* Ensure html and body take full height */
@@ -61,6 +70,7 @@ video {
     height: 100%; /* Fill the container */
     border-radius: 40px; /* Rounded corners */
     object-fit: cover; /* Cover the container while maintaining aspect ratio */
+    pointer-events: none;
 }
 
 /* Canvas element for capturing image */
