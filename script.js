@@ -108,4 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update flash dimensions on window resize
     window.addEventListener('resize', updateFlashDimensions);
+
+    // Handle exiting fullscreen on iOS
+    document.addEventListener('webkitendfullscreen', () => {
+        if (video.paused) {
+            video.play(); // Restart the video stream when exiting fullscreen on iOS
+        }
+    });
 });
