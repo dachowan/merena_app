@@ -3,8 +3,6 @@
 @supports (-webkit-overflow-scrolling: touch) {
     /* iOS-specific styles */
     video {
-        position: relative !important; /* Reset position */
-        height: auto !important; /* Ensure auto height */
         max-height: 100%; /* Ensure it fits within the parent container */
         -webkit-object-fit: cover;
         object-fit: cover;
