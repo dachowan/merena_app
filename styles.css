@@ -6,6 +6,8 @@
         position: relative !important; /* Reset position */
         height: auto !important; /* Ensure auto height */
         max-height: 100%; /* Ensure it fits within the parent container */
+        -webkit-object-fit: cover;
+        object-fit: cover;
     }
 }
 
@@ -71,6 +73,7 @@ video {
     border-radius: 40px; /* Rounded corners */
     object-fit: cover; /* Cover the container while maintaining aspect ratio */
     pointer-events: none;
+    display: block;
 }
 
 /* Canvas element for capturing image */
