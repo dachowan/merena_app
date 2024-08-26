@@ -107,8 +107,10 @@ document.addEventListener('DOMContentLoaded', () => {
         triangleWrapper.classList.toggle('rotated', isRotated);
     };
 
-    // Flip camera button event listener
-    flipButton.addEventListener('click', flipCamera);
+    // Original flip button now redirects to info.html
+    flipButton.addEventListener('click', () => {
+        window.location.href = 'info.html'; // Redirect to info.html
+    });
 
     // Triangle wrapper event listener for flipping the camera
     triangleWrapper.addEventListener('click', flipCamera);

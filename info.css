@@ -1,0 +1,64 @@
+/* Ensure the body and html take up 100% of the viewport height */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden; /* Eliminate scrollability */
+    background-color: black;
+}
+
+/* General container styling */
+.container {
+    width: 90%; /* Full width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+/* Top container takes up 20% of the viewport height */
+.top-container {
+    height: 20vh;
+}
+
+/* Bottom container takes up 80% of the viewport height */
+.bottom-container {
+    height: 80vh;
+}
+
+/* Optional: Center text in the containers */
+.bottom-container p {
+    margin: 0;
+    font-size: 20px;
+    color: #fff;
+    text-align: center;
+}
+
+.top-container h1 {
+    margin: 0;
+    font-size: 50px;
+    color:#fff;
+    text-align: center;
+}
+
+/* Styling for the close button */
+.close-button {
+    position: absolute;
+    right: 5%;
+    width: 10vh;
+    height: 10vh;
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-button::before {
+    content: "×"; /* Cross character */
+    font-family: Arial, sans-serif; /* Ensure proper font rendering */
+    font-size: 8vh;
+}

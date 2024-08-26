@@ -115,7 +115,7 @@ canvas {
 .button2 {
     width: calc(15vw); /* Width of the button */
     height: calc(15vw); /* Height of the button */
-    border-radius: 20%; /* Circular shape */
+    border-radius: 15%; /* Circular shape */
     background-color: #fff; /* White background */
     border: none;
     cursor: pointer; 
@@ -128,12 +128,7 @@ button#flip {
     cursor: pointer;
     color: #000;
     position: absolute; /* Adjust position as needed */
-    right: 0;
-}
-
-button#flip::before {
-    content: "\21C4"; /* Unicode for flip arrow */
-    font-family: Arial, sans-serif; /* Ensure proper font rendering */
+    left: 0;
 }
 
 /* Capture button styling */
@@ -148,7 +143,7 @@ button#capture {
     width: calc(15vw); /* Width of the button */
     height: calc(15vw); /* Height of the button */
     position: absolute;
-    left: 0;
+    right: 0;
     align-content: center;
     align-items: center;
     display: flex;
