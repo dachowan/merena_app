@@ -21,6 +21,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to detect iOS devices
     const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
+    // Function to center the video in its container
+    const centerVideo = () => {
+        if (isIOS()) {
+            const container = video.parentElement;
+            const containerRect = container.getBoundingClientRect();
+            const videoRect = video.getBoundingClientRect();
+            
+            // Center the video horizontally and vertically
+            video.style.position = 'absolute';
+            video.style.top = `${(containerRect.height - videoRect.height) / 2}px`;
+            video.style.left = `${(containerRect.width - videoRect.width) / 2}px`;
+            video.style.height = 'auto'; // Reset height to auto
+            video.style.width = '100%'; // Set width to 100% to cover container
+        }
+    };
+
     // Start video stream
     const startVideoStream = async () => {
         try {
@@ -35,11 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             // Apply a horizontal flip if the front-facing camera is active
-            if (currentFacingMode === 'user') {
-                video.style.transform = 'scaleX(-1)';
-            } else {
-                video.style.transform = 'scaleX(1)'; // Reset to normal for rear camera
-            }
+            video.style.transform = currentFacingMode === 'user' ? 'scaleX(-1)' : 'scaleX(1)';
         } catch (error) {
             console.error('Error accessing webcam:', error);
         }
@@ -51,21 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
         flash.style.width = `${videoRect.width}px`;
         flash.style.height = `${videoRect.height}px`;
     };
-
-        // Function to center the video in its container
-        const centerVideo = () => {
-            if (!isIOS()) return; // Only apply centering for iOS devices
-            
-            const containerRect = video.parentElement.getBoundingClientRect();
-            const videoRect = video.getBoundingClientRect();
-            
-            // Center the video horizontally and vertically
-            video.style.position = 'absolute';
-            video.style.top = `${(containerRect.height - videoRect.height) / 2}px`;
-            video.style.left = `${(containerRect.width - videoRect.width) / 2}px`;
-            video.style.height = 'auto'; // Reset height to auto
-            video.style.width = '100%'; // Set width to 100% to cover container
-        };
 
     // Initialize video
     startVideoStream();
@@ -84,14 +81,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 100); // Duration of flash effect
 
         // Flip the canvas back before drawing the image
+        context.save();
         if (currentFacingMode === 'user') {
-            context.save();
             context.scale(-1, 1); // Flip horizontally
             context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
-            context.restore();
         } else {
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
         }
+        context.restore();
 
         const dataURL = canvas.toDataURL('image/jpeg');
 
@@ -124,8 +121,11 @@ document.addEventListener('DOMContentLoaded', () => {
         startVideoStream();
     });
 
-    // Update flash dimensions on window resize
-    window.addEventListener('resize', updateFlashDimensions);
+    // Update flash dimensions and video centering on window resize
+    window.addEventListener('resize', () => {
+        updateFlashDimensions();
+        centerVideo();
+    });
 
     // Handle exiting fullscreen on iOS
     document.addEventListener('webkitendfullscreen', () => {
