@@ -1,23 +1,23 @@
-// script.js
-
 document.addEventListener('DOMContentLoaded', () => {
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
     const captureButton = document.getElementById('capture');
     const flipButton = document.getElementById('flip');
-    const flash = document.querySelector('.flash'); // Select the flash element
+    const triangleWrapper = document.querySelector('.triangle-wrapper'); // Select the wrapper element
+    const flash = document.querySelector('.flash');
 
     let currentFacingMode = 'environment';
+    let isRotated = false;
 
     const constraints = {
         video: {
             facingMode: currentFacingMode,
-            width: { ideal: 1280 },  // Ideal width
-            height: { ideal: 720 }   // Ideal height
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
         }
     };
-    
+
     // Function to detect iOS devices
     const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
@@ -62,12 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
         flash.style.opacity = '1';
         setTimeout(() => {
             flash.style.opacity = '0';
-        }, 100); // Duration of flash effect
+        }, 100);
 
-        // Flip the canvas back before drawing the image
         context.save();
         if (currentFacingMode === 'user') {
-            context.scale(-1, 1); // Flip horizontally
+            context.scale(-1, 1); 
             context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
         } else {
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -76,9 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const dataURL = canvas.toDataURL('image/jpeg');
 
-        console.log('Captured image data URL:', dataURL); // Debug log
+        console.log('Captured image data URL:', dataURL);
 
-        // Replace the fetch URL with your deployed app URL on Render
         fetch('https://bemarena.onrender.com/upload', {
             method: 'POST',
             body: JSON.stringify({ image: dataURL }),
@@ -89,8 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error('Error uploading photo:', error));
     });
 
-    // Flip camera button event listener
-    flipButton.addEventListener('click', () => {
+    // Function to flip the camera
+    const flipCamera = () => {
         currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
         constraints.video.facingMode = currentFacingMode;
 
@@ -103,7 +101,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Start the video stream with the new facing mode
         startVideoStream();
-    });
+
+        // Rotate the triangle wrapper 180°
+        isRotated = !isRotated;
+        triangleWrapper.classList.toggle('rotated', isRotated);
+    };
+
+    // Flip camera button event listener
+    flipButton.addEventListener('click', flipCamera);
+
+    // Triangle wrapper event listener for flipping the camera
+    triangleWrapper.addEventListener('click', flipCamera);
 
     // Update flash dimensions and video centering on window resize
     window.addEventListener('resize', () => {
@@ -111,10 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
         centerVideo();
     });
 
-    // Handle exiting fullscreen on iOS
     document.addEventListener('webkitendfullscreen', () => {
         if (video.paused) {
-            video.play(); // Restart the video stream when exiting fullscreen on iOS
+            video.play();
         }
     });
 });

@@ -143,3 +143,52 @@ button#capture {
     cursor: pointer;
     margin: 0 auto;
 }
+
+.triangleM {
+    width: calc(15vw); /* Width of the button */
+    height: calc(15vw); /* Height of the button */
+    position: absolute;
+    left: 0;
+    align-content: center;
+    align-items: center;
+    display: flex;
+}
+.triangle-wrapper {
+    cursor: pointer;
+    transition: transform 0.5s ease-in-out; /* Smooth rotation */
+    margin: 0 auto;
+}
+
+.triangle {
+	background-color: #fff;
+    cursor: pointer;
+    position: relative;
+}
+.triangle:before,
+.triangle:after {
+	content: '';
+	position: absolute;
+	background-color: inherit;
+}
+.triangle,
+.triangle:before,
+.triangle:after {
+	width:  8vw;
+	height: 8vw;
+	border-top-right-radius: 30%;
+}
+
+.triangle {
+	transform: rotate(-60deg) skewX(-30deg) scale(1,.866);
+}
+.triangle:before {
+	transform: rotate(-135deg) skewX(-45deg) scale(1.414,.707) translate(0,-50%);
+}
+.triangle:after {
+	transform: rotate(135deg) skewY(-45deg) scale(.707,1.414) translate(50%);
+}
+
+/* Rotating the wrapper element */
+.triangle-wrapper.rotated {
+    transform: rotate(180deg);
+}
