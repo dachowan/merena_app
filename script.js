@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 canvas.width = video.videoWidth;
                 canvas.height = video.videoHeight;
                 updateFlashDimensions();
+                centerVideo();
             };
 
             // Apply a horizontal flip if the front-facing camera is active
@@ -49,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         flash.style.height = `${videoRect.height}px`;
     };
 
+    
     // Initialize video
     startVideoStream();
 
