@@ -2,6 +2,11 @@
 
 @supports (-webkit-overflow-scrolling: touch) {
     /* iOS-specific styles */
+    .container2 {
+        display: flex;
+        justify-content: center;
+        align-items: center; /* Center content vertically *
+        
     video {
         position: relative !important; /* Reset position */
         height: auto !important; /* Ensure auto height */
