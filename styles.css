@@ -104,12 +104,16 @@ canvas {
 
 /* Button styling */
 .button {
-    width: calc(18vw); /* Width of the button */
-    height: calc(18vw); /* Height of the button */
+    width: calc(20vw); /* Width of the button */
+    height: calc(20vw); /* Height of the button */
     border-radius: 50%; /* Circular shape */
     background-color: #fff; /* White background */
     border: none;
     cursor: pointer;
+    align-content: center;
+    align-items: center;
+    position: relative;
+    display: inline-block;
 }
 
 .button2 {
@@ -137,6 +141,10 @@ button#capture {
     border: none;
     cursor: pointer;
     margin: 0 auto;
+    align-items: center;
+    align-content: center;
+    position: relative;
+    display: inline-block;
 }
 
 .triangleM {
@@ -186,4 +194,18 @@ button#capture {
 /* Rotating the wrapper element */
 .triangle-wrapper.rotated {
     transform: rotate(180deg);
+}
+
+.photo-count {
+    position: absolute;
+    color: #000;
+    font-family: Arial, sans-serif;
+    font-size: 12vw;
+    text-align: center;
+    z-index: 20;
+    width: 15vw;
+    height: 15vw;
+    transform: translateX(-50%) translateY(-50%);
+    align-items: center;
+    align-content: center;
 }

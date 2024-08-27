@@ -1,11 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const MAX_PHOTOS = 20;
+    const photoCountKey = 'photoCount';
+    const lastResetKey = 'lastResetDate';
+
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
     const captureButton = document.getElementById('capture');
     const flipButton = document.getElementById('flip');
-    const triangleWrapper = document.querySelector('.triangle-wrapper'); // Select the wrapper element
+    const triangleWrapper = document.querySelector('.triangle-wrapper');
     const flash = document.querySelector('.flash');
+    const photoCountDisplay = document.getElementById('photoCount');
 
     let currentFacingMode = 'environment';
     let isRotated = false;
@@ -18,10 +23,52 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Function to detect iOS devices
-    const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    // Get stored data
+    function getStoredData() {
+        return {
+            count: parseInt(localStorage.getItem(photoCountKey), 10) || 0,
+            lastResetDate: localStorage.getItem(lastResetKey)
+        };
+    }
 
-    // Start video stream
+    // Update stored data
+    function updateStoredData(count, date) {
+        localStorage.setItem(photoCountKey, count);
+        localStorage.setItem(lastResetKey, date);
+    }
+
+    // Reset photo count if it's a new day
+    function resetCountIfNeeded() {
+        const { lastResetDate } = getStoredData();
+        const today = new Date().toISOString().split('T')[0];
+
+        if (lastResetDate !== today) {
+            updateStoredData(0, today);
+        }
+    }
+
+    // Check if the user can take a photo
+    function canTakePhoto() {
+        const { count } = getStoredData();
+        return count < MAX_PHOTOS;
+    }
+
+    // Increment the photo count
+    function incrementPhotoCount() {
+        const { count } = getStoredData();
+        const newCount = count + 1;
+        updateStoredData(newCount, new Date().toISOString().split('T')[0]);
+        updatePhotoCountDisplay(); // Update the UI
+    }
+
+    // Update the photo count display
+    function updatePhotoCountDisplay() {
+        const { count } = getStoredData();
+        const remainingPhotos = MAX_PHOTOS - count;
+        photoCountDisplay.textContent = `${remainingPhotos}`;
+    }
+
+    // Initialize video stream
     const startVideoStream = async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -34,88 +81,93 @@ document.addEventListener('DOMContentLoaded', () => {
                 centerVideo();
             };
 
-            // Apply a horizontal flip if the front-facing camera is active
+            // Apply horizontal flip if front-facing camera is active
             video.style.transform = currentFacingMode === 'user' ? 'scaleX(-1)' : 'scaleX(1)';
         } catch (error) {
             console.error('Error accessing webcam:', error);
         }
     };
 
-    // Function to update flash dimensions to match video
+    // Update flash dimensions to match video
     const updateFlashDimensions = () => {
         const videoRect = video.getBoundingClientRect();
         flash.style.width = `${videoRect.width}px`;
         flash.style.height = `${videoRect.height}px`;
     };
 
-    // Initialize video
-    startVideoStream();
-
     // Capture button event listener
     captureButton.addEventListener('click', () => {
-        if (!video.srcObject) {
-            console.error('Video source is not available.');
-            return;
-        }
+        if (canTakePhoto()) {
+            if (!video.srcObject) {
+                console.error('Video source is not available.');
+                return;
+            }
 
-        // Show flash effect
-        flash.style.opacity = '1';
-        setTimeout(() => {
-            flash.style.opacity = '0';
-        }, 100);
+            // Show flash effect
+            flash.style.opacity = '1';
+            setTimeout(() => {
+                flash.style.opacity = '0';
+            }, 100);
 
-        context.save();
-        if (currentFacingMode === 'user') {
-            context.scale(-1, 1); 
-            context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
+            context.save();
+            if (currentFacingMode === 'user') {
+                context.scale(-1, 1);
+                context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
+            } else {
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            }
+            context.restore();
+
+            const dataURL = canvas.toDataURL('image/jpeg');
+
+            console.log('Captured image data URL:', dataURL);
+
+            fetch('https://bemarena.onrender.com/upload', {
+                method: 'POST',
+                body: JSON.stringify({ image: dataURL }),
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => response.json())
+            .then(data => console.log('Photo uploaded successfully:', data))
+            .catch(error => console.error('Error uploading photo:', error));
+
+            incrementPhotoCount(); // Increment the count after taking a photo
         } else {
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            alert('Photo limit reached for today. Please come back tomorrow!');
         }
-        context.restore();
-
-        const dataURL = canvas.toDataURL('image/jpeg');
-
-        console.log('Captured image data URL:', dataURL);
-
-        fetch('https://bemarena.onrender.com/upload', {
-            method: 'POST',
-            body: JSON.stringify({ image: dataURL }),
-            headers: { 'Content-Type': 'application/json' }
-        })
-        .then(response => response.json())
-        .then(data => console.log('Photo uploaded successfully:', data))
-        .catch(error => console.error('Error uploading photo:', error));
     });
 
-    // Function to flip the camera
+    // Initialize the video stream and UI
+    resetCountIfNeeded();
+    updatePhotoCountDisplay(); // Display the initial remaining count
+    startVideoStream();
+
+    // Other existing event listeners...
+
+    flipButton.addEventListener('click', () => {
+        window.location.href = 'info.html';
+    });
+
+    triangleWrapper.addEventListener('click', () => {
+        flipCamera();
+    });
+
     const flipCamera = () => {
         currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
         constraints.video.facingMode = currentFacingMode;
 
-        // Stop the current video stream
         const stream = video.srcObject;
         if (stream) {
             const tracks = stream.getTracks();
             tracks.forEach(track => track.stop());
         }
 
-        // Start the video stream with the new facing mode
         startVideoStream();
 
-        // Rotate the triangle wrapper 180°
         isRotated = !isRotated;
         triangleWrapper.classList.toggle('rotated', isRotated);
     };
 
-    // Original flip button now redirects to info.html
-    flipButton.addEventListener('click', () => {
-        window.location.href = 'info.html'; // Redirect to info.html
-    });
-
-    // Triangle wrapper event listener for flipping the camera
-    triangleWrapper.addEventListener('click', flipCamera);
-
-    // Update flash dimensions and video centering on window resize
     window.addEventListener('resize', () => {
         updateFlashDimensions();
         centerVideo();
