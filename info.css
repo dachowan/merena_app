@@ -24,28 +24,31 @@ html, body {
 
 /* Bottom container takes up 80% of the viewport height */
 .bottom-container {
-    height: 80vh;
+    height: 60vh;
 }
 
 /* Optional: Center text in the containers */
 .bottom-container p {
     margin: 0;
-    font-size: 20px;
+    font-size: 4vw;
     color: #fff;
     text-align: center;
 }
 
 .top-container h1 {
     margin: 0;
-    font-size: 7vh;
+    font-size: 10vw;
     color:#fff;
     text-align: center;
+}
+
+.close-container {
+    height: 20vh;
 }
 
 /* Styling for the close button */
 .close-button {
     position: absolute;
-    right: 5%;
     width: 10vh;
     height: 10vh;
     background: transparent;
@@ -60,5 +63,5 @@ html, body {
 .close-button::before {
     content: "×"; /* Cross character */
     font-family: Arial, sans-serif; /* Ensure proper font rendering */
-    font-size: 7vh;
+    font-size: 10vw;
 }

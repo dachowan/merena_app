@@ -104,8 +104,8 @@ canvas {
 
 /* Button styling */
 .button {
-    width: calc(15vw); /* Width of the button */
-    height: calc(15vw); /* Height of the button */
+    width: calc(18vw); /* Width of the button */
+    height: calc(18vw); /* Height of the button */
     border-radius: 50%; /* Circular shape */
     background-color: #fff; /* White background */
     border: none;
@@ -113,8 +113,8 @@ canvas {
 }
 
 .button2 {
-    width: calc(15vw); /* Width of the button */
-    height: calc(15vw); /* Height of the button */
+    width: calc(13vw); /* Width of the button */
+    height: calc(13vw); /* Height of the button */
     border-radius: 15%; /* Circular shape */
     background-color: #fff; /* White background */
     border: none;
