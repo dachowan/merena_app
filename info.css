@@ -25,7 +25,7 @@ html, body {
 
 /* Bottom container takes up 80% of the viewport height */
 .bottom-container {
-    height: 60vh;
+    height: 50vh;
 }
 
 /* Optional: Center text in the containers */
@@ -44,23 +44,19 @@ html, body {
 }
 
 .close-container {
-    height: 20vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 30vh;
 }
 
 /* Styling for the close button */
 .close-button {
     width: 10vh;
     height: 10vh;
-    display: flex;
+    position: absolute;
+    transform: translateY(-50%);
     background: transparent;
     border: none;
     color: #fff;
     cursor: pointer;
-    align-items: center;
-    justify-content: center;
 }
 
 .close-button::before {
