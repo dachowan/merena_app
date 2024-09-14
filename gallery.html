@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <title>Photo Gallery</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -13,6 +13,19 @@
             margin: 0;
             padding: 0;
         }
+        .password-container {
+            margin-top: 50px;
+        }
+        input[type="password"] {
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
         h1 {
             margin-top: 20px;
         }
@@ -21,6 +34,7 @@
             flex-wrap: wrap; 
             justify-content: center; 
             padding: 20px;
+            display: none; /* Initially hidden */
         }
         .gallery img { 
             margin: 10px; 
@@ -32,7 +46,38 @@
     </style>
 </head>
 <body>
+    <div class="password-container">
+        <input type="password" id="password" placeholder="Enter Password">
+        <button id="submitPassword">Submit</button>
+    </div>
+    
     <div class="gallery" id="gallery"></div>
+
     <script src="gallery.js"></script>
+    <script>
+        const correctPassword = 'mySecretPassword'; // Set your password here
+        const submitButton = document.getElementById('submitPassword');
+        const passwordInput = document.getElementById('password');
+        const gallery = document.getElementById('gallery');
+
+        submitButton.addEventListener('click', () => {
+            const enteredPassword = passwordInput.value;
+
+            if (enteredPassword === correctPassword) {
+                // If password is correct, show the gallery
+                gallery.style.display = 'flex';
+                document.querySelector('.password-container').style.display = 'none';
+            } else {
+                alert('Incorrect password!');
+            }
+        });
+
+        // Optionally, you can submit the password with the Enter key
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitButton.click();
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const MAX_PHOTOS = 20;
+    const MAX_PHOTOS = 10;
     const photoCountKey = 'photoCount';
     const lastResetKey = 'lastResetDate';
 

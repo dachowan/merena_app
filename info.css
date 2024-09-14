@@ -3,9 +3,10 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
     overflow: hidden; /* Eliminate scrollability */
     background-color: black;
+    font-family: "Roboto Mono", monospace;
+    font-weight: 400;
 }
 
 /* General container styling */
@@ -30,7 +31,7 @@ html, body {
 /* Optional: Center text in the containers */
 .bottom-container p {
     margin: 0;
-    font-size: 4vw;
+    font-size: 3vw;
     color: #fff;
     text-align: center;
 }
@@ -44,24 +45,25 @@ html, body {
 
 .close-container {
     height: 20vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Styling for the close button */
 .close-button {
-    position: absolute;
     width: 10vh;
     height: 10vh;
+    display: flex;
     background: transparent;
     border: none;
     color: #fff;
     cursor: pointer;
-    display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .close-button::before {
     content: "×"; /* Cross character */
-    font-family: Arial, sans-serif; /* Ensure proper font rendering */
     font-size: 10vw;
 }
